@@ -22,4 +22,8 @@ public class LeaderboardFacade {
                 .map(profileToProfileDtoConverter::convert)
                 .collect(toList());
     }
+    public List<ProfileDto> getProfileByLanguage(String language) {
+        return leaderboardRepositoryService.getProfileByLanguage(language).stream()
+                .map(profileToProfileDtoConverter::convert).collect(toList());
+    }
 }
