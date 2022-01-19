@@ -1,5 +1,6 @@
 package io.turntabl.leaderboardservice.controller;
 
+import io.turntabl.leaderboardservice.controller.response.LanguageProfileDto;
 import io.turntabl.leaderboardservice.client.request.AddUserDto;
 import io.turntabl.leaderboardservice.controller.response.ProfileDto;
 import io.turntabl.leaderboardservice.converter.ProfileToProfileDtoConverter;
@@ -25,6 +26,10 @@ public class LeaderboardFacade {
         return leaderboardRepositoryService.getProfiles().stream()
                 .map(profileToProfileDtoConverter::convert)
                 .collect(toList());
+    }
+
+    public List<LanguageProfileDto> getProfileByLanguage(String language) {
+        return leaderboardRepositoryService.getProfileByLanguage(language);
     }
     public boolean addUser(AddUserDto addUserDto) {
         return leaderboardRepositoryService.addUser(addUserDto);

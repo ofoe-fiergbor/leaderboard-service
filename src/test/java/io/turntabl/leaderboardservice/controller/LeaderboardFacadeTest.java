@@ -26,6 +26,7 @@ class LeaderboardFacadeTest {
 
     @MockBean
     private LeaderboardRepositoryService leaderboardRepositoryService;
+
     @MockBean
     ProfileToProfileDtoConverter profileToProfileDtoConverter;
 
