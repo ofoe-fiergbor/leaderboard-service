@@ -1,6 +1,7 @@
 package io.turntabl.leaderboardservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.turntabl.leaderboardservice.controller.response.LanguageProfileDto;
 import io.turntabl.leaderboardservice.controller.response.ProfileDto;
 import io.turntabl.leaderboardservice.enums.Languages;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class LeaderboardController {
 
     @GetMapping("/{language}")
     @Operation(summary = "Get leaderboard by language")
-    public List<ProfileDto> getLeaderboardByLanguage(@PathVariable Languages language) {
+    public List<LanguageProfileDto> getLeaderboardByLanguage(@PathVariable Languages language) {
         return leaderboardFacade.getProfileByLanguage(language.name());
     }
 }

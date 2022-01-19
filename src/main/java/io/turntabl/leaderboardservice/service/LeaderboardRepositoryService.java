@@ -1,5 +1,7 @@
 package io.turntabl.leaderboardservice.service;
 
+import io.turntabl.leaderboardservice.controller.response.LanguageProfileDto;
+import io.turntabl.leaderboardservice.model.LanguageLevel;
 import io.turntabl.leaderboardservice.model.Profile;
 import io.turntabl.leaderboardservice.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +20,18 @@ public class LeaderboardRepositoryService {
         return profileRepository.findAll();
     }
 
-    public List<Profile> getProfileByLanguage(String language) {
-        List<Profile> result = new ArrayList<>();
-        profileRepository.findAll().forEach(profile -> {
-            profile.getLanguageLevels().stream()
-                    .filter(languageLevel -> languageLevel.getName().toLowerCase()
-                            .equals(language.toLowerCase())).map(languageLevel -> profile)
-                    .forEach(result::add);
-        });
-        return result;
+    public List<LanguageProfileDto> getProfileByLanguage(String language) {
+        List<LanguageProfileDto> languageProfileDtos = new ArrayList<>();
+
+        getProfiles().forEach(p -> p.getLanguageLevels().stream().filter(l -> l.getName().equals(language)).map(l -> LanguageProfileDto.builder()
+                .languageRank(l.getRank())
+                .username(p.getId())
+                .clan(p.getClan())
+                .honour(p.getHonour())
+                .overallRank(p.getOverallRank())
+                .build())
+                .forEach(languageProfileDtos::add));
+
+        return languageProfileDtos;
     }
 }
