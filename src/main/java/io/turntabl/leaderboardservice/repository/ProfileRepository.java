@@ -16,4 +16,6 @@ public interface ProfileRepository extends JpaRepository<Profile, String> {
     @Query(value = "insert into PROFILES(ID) VALUES (:username)", nativeQuery = true)
     @Transactional
     void addNewUser(@Param("username") String username);
+
+    boolean existsById(String id);
 }

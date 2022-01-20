@@ -1,7 +1,6 @@
 package io.turntabl.leaderboardservice.service;
 
 import io.turntabl.leaderboardservice.controller.response.LanguageProfileDto;
-import io.turntabl.leaderboardservice.model.LanguageLevel;
 import io.turntabl.leaderboardservice.client.request.AddUserDto;
 import io.turntabl.leaderboardservice.model.Profile;
 import io.turntabl.leaderboardservice.repository.ProfileRepository;
@@ -37,6 +36,9 @@ public class LeaderboardRepositoryService {
     }
 
     public boolean addUser(AddUserDto addUserDto) {
+        if (profileRepository.existsById(addUserDto.getUsername())) {
+            return false;
+        }
         profileRepository.addNewUser(addUserDto.getUsername());
         return  true;
     }
