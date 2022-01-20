@@ -1,7 +1,7 @@
 package io.turntabl.leaderboardservice.service;
 
+import io.turntabl.leaderboardservice.client.request.AddUserDto;
 import io.turntabl.leaderboardservice.controller.response.LanguageProfileDto;
-import io.turntabl.leaderboardservice.model.LanguageLevel;
 import io.turntabl.leaderboardservice.model.Profile;
 import io.turntabl.leaderboardservice.repository.ProfileRepository;
 
@@ -16,13 +16,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {LeaderboardRepositoryService.class})
 @ExtendWith(MockitoExtension.class)
 class LeaderboardRepositoryServiceTest {
+
 
 
     @Mock
@@ -60,7 +61,7 @@ class LeaderboardRepositoryServiceTest {
     @Test
     void testGetProfileByLanguage() {
         when(this.profileRepository.findAll()).thenReturn(new ArrayList<>());
-        List<LanguageProfileDto> actualProfileByLanguage = underTest.getProfileByLanguage("en");
+        List<LanguageProfileDto> actualProfileByLanguage = underTest.getProfileByLanguage("java");
         assertTrue(actualProfileByLanguage.isEmpty());
         verify(this.profileRepository).findAll();
         assertEquals(actualProfileByLanguage, underTest.getProfiles());
@@ -79,11 +80,18 @@ class LeaderboardRepositoryServiceTest {
         ArrayList<Profile> profileList = new ArrayList<>();
         profileList.add(profile);
         when(profileRepository.findAll()).thenReturn(profileList);
-        assertTrue(underTest.getProfileByLanguage("en").isEmpty());
+        assertTrue(underTest.getProfileByLanguage("java").isEmpty());
         verify(profileRepository).findAll();
         assertEquals(1, underTest.getProfiles().size());
     }
 
+    @Test
+    void testAddUser() {
+        doNothing().when(this.profileRepository).addNewUser((String) any());
+        assertTrue(this.underTest.addUser(new AddUserDto()));
+        verify(this.profileRepository).addNewUser((String) any());
+        assertTrue(this.underTest.getProfiles().isEmpty());
+    }
 
 
 }
